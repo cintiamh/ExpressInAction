@@ -103,7 +103,7 @@ app.get('/', function(request, response) {
 });
 
 // Starts the Express server on port 3000 and logs
-app.listen(3000, function(){
+app.listen(3000, function() {
   console.log('Express app started on port 3000.');
-})
+});
 ```
