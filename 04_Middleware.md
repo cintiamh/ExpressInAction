@@ -88,3 +88,48 @@ app.listen(3000, function() {
 ```
 
 ## Error handling middleware
+
+There are two types of middleware:
+* middleware functions that takes three arguments (request, response, next(optional))
+* less used: error-handling middleware. When your app enters error-handling mode, the regular middleware are ignored and only runs error-handling middlewares.
+
+To enter error-handling mode:
+* call `next` with an argument.
+
+```javascript
+next(new Error('Something bad happened.'));
+```
+
+error-handling middleware is conventionally placed at the end of your middleware stack.
+
+```javascript
+app.use(function(req, res, next) {
+  res.sendFile(filePath, function(err) {
+    if (err) {
+      next(new Error("Error sending file!"));
+    }
+  });
+});
+```
+
+Error-handling middleware example:
+```javascript
+// Error-handling middleware functions are identified by having 4 arguments.
+app.use(function(err, req, res, next) {
+  console.error(err);
+  // if you call next without error, it will exit the error-handling mode.
+  next(err);
+})
+```
+
+## Other useful middleware
+
+* `express.static`
+* body-parser: https://github.com/expressjs/body-parser
+* cookie-parser: https://github.com/expressjs/cookie-session
+* compression: https://github.com/expressjs/compression
+* Full list here: http://expressjs.com/en/resources/middleware.html
+
+Third-party:
+* Helmet: https://github.com/helmetjs/helmet
+* connect-assets: https://github.com/adunkman/connect-assets
