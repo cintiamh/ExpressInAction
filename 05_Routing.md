@@ -115,3 +115,52 @@ Router with many subrouters.
 HTML, CSS, images, etc.
 
 ### Static files with middleware
+
+#### Routing with multiple static file directories
+
+```javascript
+var publicPath = path.resolve(__dirname, "public");
+var userUploadsPath = path.resolve(__dirname, "user_uploads");
+
+app.use('/public', express.static(publicPath));
+app.use('/uploads', express.static(userUploadsPath));
+```
+
+### Routing to static files
+
+Getting a user profile photo:
+```javascript
+app.get("/users/:userid/profile_photo", function(req, res) {
+  res.sendFile(getProfilePhotoPath(req.params.userid));
+})
+```
+
+## Using Express with https
+
+* Transport Layer Security - TLS - uses public key cryptography.
+* Secure Sockets Layer - SSL
+
+1. Generate your public and private keys using OpenSSL. (it comes pre-installed on MacOS)
+2. Type the commands:
+
+```
+$ openssl genrsa -out privatekey.pem 1024
+$ openssl req -new -key privatekey.pem -out request.pem
+```
+
+3. Request a certificate from a Certificate Authority (VeriSign, Google, or https://letsencrypt.org/).
+4. Once you have a certificate, you can use Node's built-in HTTPS module with Express.
+
+```javascript
+var express = require('express');
+var https = require('https');
+var fs = require('fs');
+
+var app = express();
+// ... do stuff
+var httpsOptions = {
+  key: fs.readFileSync("path/to/private/key.pem"),
+  cert: fs.readFileSync("path/to/certificate.pem")
+};
+https.createServer(httpsOptions, app).listen(3000);
+```
