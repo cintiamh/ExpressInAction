@@ -1,0 +1,14 @@
+{
+  "name": "06_api",
+  "version": "0.0.1",
+  "description": "api test",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app"
+  },
+  "author": "Cintia",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.15.3"
+  }
+}
