@@ -30,6 +30,20 @@ fs.readFile("myfile.txt", function(err, data) {
 
 You'll always want to make sure that your users are giving you the data you expect, and if they aren't, you'll need to do something about it.
 
+```
+$ npm i arraywrap --save
+```
+
+```javascript
+var arrayWrap = require('arraywrap');
+// ...
+app.get("/search", function(req, res) {
+  var search = arrayWrap(req.query.q || ""); // always becomes an array
+  var terms = search[0].split("+");
+  // ...
+});
+```
+
 ## Protecting your users
 
 ### Using HTTPS
@@ -65,6 +79,7 @@ var helmet = require("helmet");
 var ms = require("ms");
 // ...
 app.use(helmet.hsts({
+  // ms converts human readable strings into seconds
   maxAge: ms("1 year"),
   includeSubdomains: true
 }));
@@ -89,6 +104,8 @@ There is one big way to prevent XSS: never blindly trust user input.
 You can sanitize or escape user input, so that when you put it into your HTML, you aren't doing anything unexpected.
 
 You'll want to sanitize things as much as you can and always keep the context in mind.
+
+EJS use `<%= myString %>`
 
 #### Mitigating XSS with HTTP headers
 
@@ -116,7 +133,7 @@ $ npm i csurf --save
 Example:
 https://github.com/EvanHahn/Express.js-in-Action-code/blob/master/Chapter_10/csrf-example/app.js
 
-## Keep your dependencies safe
+## Keep your npm dependencies safe
 
 * Audit the code yourself
 * Make sure you're on the latest versions
